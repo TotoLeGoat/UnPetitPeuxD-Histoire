@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion requise</title>
+    <link rel="stylesheet" href="Login.css">
+    <style>
+        .password-container {
+            position: relative;
+        }
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body style="display:none">
+<script>
+    // Si déjà connecté, va direct à l'accueil
+    if(sessionStorage.getItem('isConnected') === 'yes') {
+        window.location.href = "Page1.html";
+    } else {
+        document.body.style.display = "";
+    }
+
+    const USER = "LEGOAT";
+    const PASS = "TOTOLEGOAT";
+
+    function toggleLoginPasswordVisibility() {
+        var passwordInput = document.getElementById("loginPass");
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+        } else {
+            passwordInput.type = "password";
+        }
+    }
+
+    function toggleRegisterPasswordVisibility() {
+        var passwordInput = document.getElementById("registerPass");
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+        } else {
+            passwordInput.type = "password";
+        }
+    }
+
+    function toggleRegisterConfirmPasswordVisibility() {
+        var passwordInput = document.getElementById("registerPassConfirm");
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+        } else {
+            passwordInput.type = "password";
+        }
+    }
+
+    window.onload = function() {
+        // Connexion
+        document.getElementById('loginBtn').onclick = function() {
+            const user = document.getElementById('loginUser').value.trim();
+            const pass = document.getElementById('loginPass').value;
+            const error = document.getElementById('loginError');
+
+            if (user === USER && pass === PASS) {
+                sessionStorage.setItem('isConnected', 'yes');
+                window.location.href = "Page1.html";
+            } else {
+                error.textContent = "Identifiant ou mot de passe incorrect !";
+            }
+        };
+
+        document.getElementById('loginPass').addEventListener('keydown', function(e){
+            if(e.key === "Enter") document.getElementById('loginBtn').click();
+        });
+        document.getElementById('loginUser').addEventListener('keydown', function(e){
+            if(e.key === "Enter") document.getElementById('loginBtn').click();
+        });
+
+        // Affichage inscription
+        document.getElementById('showRegister').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('loginBox').style.display = 'none';
+            document.getElementById('registerBox').style.display = '';
+        });
+
+        document.getElementById('showLogin').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('loginBox').style.display = '';
+            document.getElementById('registerBox').style.display = 'none';
+        });
+
+        // Inscription (stockage local, non utilisé pour la connexion par défaut)
+        document.getElementById('registerBtn').onclick = function() {
+            const user = document.getElementById('registerUser').value.trim();
+            const pass = document.getElementById('registerPass').value;
+            const passConfirm = document.getElementById('registerPassConfirm').value;
+            const error = document.getElementById('registerError');
+
+            if (pass !== passConfirm) {
+                error.textContent = "Les mots de passe ne correspondent pas !";
+                return;
+            }
+
+            if (user === "" || pass === "") {
+                error.textContent = "Veuillez remplir tous les champs !";
+                return;
+            }
+
+            // Enregistre le compte (nom d'utilisateur et mot de passe)
+            localStorage.setItem('user', user);
+            localStorage.setItem('pass', pass);
+
+            error.textContent = "Compte créé avec succès ! Vous pouvez vous connecter.";
+
+            // Affiche la boîte de connexion
+            document.getElementById('loginBox').style.display = '';
+            document.getElementById('registerBox').style.display = 'none';
+        };
+    };
+</script>
+<div class="login-box" id="loginBox">
+    <h2>Connexion requise</h2>
+    <input type="text" id="loginUser" placeholder="Nom d'utilisateur" autocomplete="username">
+    <div class="password-container">
+        <input type="password" id="loginPass" placeholder="Mot de passe" autocomplete="current-password">
+        <span class="toggle-password" onclick="toggleLoginPasswordVisibility()">
+            &#x1F441;
+        </span>
+    </div>
+    <button id="loginBtn">Se connecter</button>
+    <div class="login-error" id="loginError"></div>
+    <a href="#" id="showRegister">Créer un compte</a>
+</div>
+
+<div class="register-box" id="registerBox" style="display:none;">
+    <h2>Créer un compte</h2>
+    <input type="text" id="registerUser" placeholder="Nom d'utilisateur" autocomplete="new-username">
+    <div class="password-container">
+        <input type="password" id="registerPass" placeholder="Mot de passe" autocomplete="new-password">
+        <span class="toggle-password" onclick="toggleRegisterPasswordVisibility()">
+            &#x1F441;
+        </span>
+    </div>
+    <div class="password-container">
+        <input type="password" id="registerPassConfirm" placeholder="Confirmer le mot de passe" autocomplete="new-password">
+        <span class="toggle-password" onclick="toggleRegisterConfirmPasswordVisibility()">
+            &#x1F441;
+        </span>
+    </div>
+    <button id="registerBtn">S'inscrire</button>
+    <div class="register-error" id="registerError"></div>
+    <a href="#" id="showLogin">Se connecter</a>
+</div>
+</body>
+</html>

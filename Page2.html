@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voyage à travers l'évolution</title>
+  <link rel="stylesheet" href="Page2.css">
+  <link href="https://fonts.googleapis.com/css?family=Inter:400,600,800&display=swap" rel="stylesheet">
+  <style>
+    .mini-tabs {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      background: #232946;
+      padding: 0 40px;
+      border-bottom: 2px solid #ffe066;
+      box-shadow: 0 2px 8px #ffe06622;
+    }
+    .mini-tab {
+      color: #ffe066;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.08em;
+      padding: 18px 0 16px 0;
+      transition: color 0.2s, border-bottom 0.2s;
+      border-bottom: 2px solid transparent;
+    }
+    .mini-tab.active, .mini-tab:hover {
+      color: #232946;
+      background: #ffe066;
+      border-bottom: 2px solid #232946;
+      border-radius: 6px 6px 0 0;
+    }
+    @media (max-width: 600px) {
+      .mini-tabs {
+        flex-direction: column;
+        gap: 0;
+        padding: 0 10px;
+      }
+      .mini-tab {
+        padding: 10px 0 8px 0;
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-animated"></div>
+  <!-- Onglets en haut -->
+  <nav class="mini-tabs">
+    <a href="Page1.html" class="mini-tab">Accueil</a>
+    <a href="Page2.html" class="mini-tab active">Frise</a>
+    <a href="https://fr.wikipedia.org/wiki/%C3%89volution" class="mini-tab" target="_blank">Wiki</a>
+    <a href="#" class="mini-tab" id="miniContact">Contact</a>
+  </nav>
+  <header class="header">
+    <h1>De la cellule à l'homme</h1>
+    <button id="logoutBtn" class="logout-btn">Déconnexion</button>
+  </header>
+  <main>
+    <section class="intro">
+      <p>
+        Plongez dans 4&nbsp;milliards d'années d'évolution, de la première cellule à Homo sapiens.
+        <span class="intro-cta">Cliquez sur une étape pour voir le détail !</span>
+      </p>
+    </section>
+    <section class="timeline-container-vertical">
+      <div class="timeline-vertical" id="timeline"></div>
+    </section>
+    <div class="event-details-popup" id="eventDetailsPopup">
+      <div class="popup-header">
+        <h2 class="popup-title" id="popupTitle"></h2>
+        <span class="popup-date" id="popupDate"></span>
+      </div>
+      <div class="popup-body">
+        <p class="popup-details" id="popupDetails"></p>
+      </div>
+      <button class="close-popup" id="closePopupBtn" title="Fermer">✕</button>
+    </div>
+    <!-- Popup Contact -->
+    <div id="contactPopup" style="display:none;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);background:#fffbe6;border:2px solid #ffe066;border-radius:12px;z-index:2000;padding:24px;box-shadow:0 4px 24px #ffe06655;">
+      <h2 style="margin-top:0;color:#232946;">Contact</h2>
+      <p style="color:#232946;">Pour toute question, écris à :<br>
+        <a href="mailto:contact@evolution.fr" style="color:#1a4ca4;">contact@evolution.fr</a>
+      </p>
+      <button onclick="document.getElementById('contactPopup').style.display='none'" style="background:#ffe066;color:#232946;border:none;border-radius:8px;padding:8px 18px;font-weight:bold;cursor:pointer;">Fermer</button>
+    </div>
+  </main>
+  <footer class="footer">
+    <p>&copy; 2025 Voyage à travers l'évolution. Tous droits réservés.</p>
+  </footer>
+  <script>
+    // Sécurité : vérifie la connexion
+    if(sessionStorage.getItem('isConnected') !== 'yes') {
+      window.location.href = "Login.html";
+    }
+    // Déconnexion
+    document.getElementById('logoutBtn').onclick = function() {
+      sessionStorage.removeItem('isConnected');
+      window.location.href = "Login.html";
+    };
+    // Onglet contact
+    document.getElementById('miniContact').onclick = function(e) {
+      e.preventDefault();
+      document.getElementById('contactPopup').style.display = 'block';
+    };
+  </script>
+  <script src="Page2.js"></script>
+</body>
+</html>

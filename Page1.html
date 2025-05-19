@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voyage à travers l'évolution</title>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="Page1.css">
+  <style>
+    /* Améliorations visuelles supplémentaires */
+    .container-voyage {
+      border: 2.5px solid #ffe066;
+      box-shadow: 0 0 80px #ffe06688, 0 0 16px #000;
+      backdrop-filter: blur(2px);
+    }
+    .cellule-img {
+      transition: transform 0.4s cubic-bezier(.4,2,.6,1), filter 0.3s;
+    }
+    .cellule-img:hover {
+      transform: scale(1.08) rotate(-4deg);
+      filter: drop-shadow(0 0 48px #ffe066cc) brightness(1.18);
+      border-color: #ffbb00;
+    }
+    .desc {
+      margin-bottom: 24px;
+      font-size: 1.22em;
+      line-height: 1.5;
+      background: rgba(34,34,34,0.7);
+      border-radius: 12px;
+      padding: 12px 8px;
+      box-shadow: 0 2px 12px #ffe06622;
+    }
+    .cta-txt {
+      display: block;
+      margin-bottom: 18px;
+      color: #ffe066;
+      font-weight: 600;
+      font-size: 1.1em;
+      letter-spacing: 0.02em;
+      text-shadow: 0 2px 8px #000, 0 0 8px #ffe06644;
+      animation: cta-blink 1.5s infinite alternate;
+    }
+    @keyframes cta-blink {
+      0% { opacity: 1; }
+      100% { opacity: 0.7; }
+    }
+    /* Ajout d'une animation d'apparition pour les boutons */
+    .btn-voyage, #logoutBtn {
+      animation: btn-appear 1.2s cubic-bezier(.4,2,.6,1);
+    }
+    @keyframes btn-appear {
+      from { opacity: 0; transform: translateY(30px) scale(0.95);}
+      to { opacity: 1; transform: translateY(0) scale(1);}
+    }
+    /* Responsive */
+    @media (max-width: 600px) {
+      .container-voyage {
+        padding: 18vw 2vw 10vw 2vw;
+        max-width: 98vw;
+      }
+      h1 {
+        font-size: 1.3em;
+      }
+      .cellule-img {
+        width: 110px;
+      }
+    }
+  </style>
+</head>
+<body style="display:none">
+  <script>
+    // Sécurité : vérifie la connexion
+    if(sessionStorage.getItem('isConnected') !== 'yes') {
+      window.location.href = "Login.html";
+    } else {
+      document.body.style.display = "";
+    }
+  </script>
+  <div class="decor" id="decor"></div>
+  <div class="container-voyage">
+    <img src="img/Cellule.PNG" alt="ADN" class="cellule-img" id="celluleImg">
+    <h1>Voyage à travers l'évolution</h1>
+    <div class="desc">
+      Bienvenue !<br>
+      Explore l’histoire fascinante de la vie, de la première cellule jusqu’à l’homme moderne.<br>
+      <span style="color:#ffe066;font-weight:bold;">Découvre, apprends et amuse-toi !</span>
+    </div>
+    <span class="cta-txt">👉 Clique ci-dessous pour commencer l’aventure !</span>
+    <button class="btn-voyage" id="startBtn">Commencer le voyage</button>
+    <button class="btn-secondary" id="logoutBtn">Déconnexion</button>
+  </div>
+  <script>
+    // Déconnexion
+    document.getElementById('logoutBtn').onclick = function() {
+      sessionStorage.removeItem('isConnected');
+      window.location.href = "Login.html";
+    };
+
+    // Décor animé : bulles lumineuses avec apparition progressive
+    const decor = document.getElementById('decor');
+    for(let i=0; i<18; i++) {
+      const b = document.createElement('div');
+      b.className = 'bubble';
+      b.style.width = b.style.height = (40 + Math.random()*90) + 'px';
+      b.style.left = (Math.random()*100) + 'vw';
+      b.style.bottom = (-30 - Math.random()*60) + 'px';
+      b.style.animationDuration = (8 + Math.random()*8) + 's';
+      b.style.opacity = 0;
+      decor.appendChild(b);
+      setTimeout(() => { b.style.opacity = 0.7; }, 100 + i*80);
+    }
+
+    // Animation sur clic du bouton
+    document.getElementById('startBtn').onclick = function(e) {
+      e.preventDefault();
+      // Crée l'image animée ADN au centre
+      const animImg = document.createElement('img');
+      animImg.src = "img/ADN.PNG";
+      animImg.alt = "ADN";
+      animImg.style.position = "fixed";
+      animImg.style.left = "50%";
+      animImg.style.top = "50%";
+      animImg.style.transform = "translate(-50%, -50%)";
+      animImg.style.width = "220px";
+      animImg.style.height = "220px";
+      animImg.style.borderRadius = "50%";
+      animImg.style.zIndex = "10000";
+      animImg.style.boxShadow = "0 0 64px #ffe066cc, 0 0 24px #ffbb00cc";
+      animImg.style.background = "#222";
+      animImg.style.pointerEvents = "none";
+      animImg.style.animation = "zoomRotateIn 1.2s cubic-bezier(.7,1.6,.5,1) forwards";
+      document.body.appendChild(animImg);
+
+      document.getElementById('startBtn').disabled = true;
+      document.getElementById('logoutBtn').disabled = true;
+
+      setTimeout(() => {
+        window.location.href = "Page2.html";
+      }, 1200);
+    };
+  </script>
+</body>
+</html>
